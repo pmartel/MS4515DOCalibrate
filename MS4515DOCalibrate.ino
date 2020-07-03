@@ -101,7 +101,7 @@ void setup()
   Serial.setTimeout(1000000); // "disable" serial input timeout
   Serial << "MS4515DO test" << endl;  
 
-/*
+
   // ask for #samples, sample rate and start pressure
   Serial << "Number of samples? ";
   nSamples = Serial.parseInt();
@@ -112,28 +112,21 @@ void setup()
 
   Serial << nSamples << " Samples at " << sampMsec << "msec" << endl;
   Serial << "Initial pressure " << pInitial << endl;
-  Serial << "sample\ttime\tcounts\tmV\tpsi\tcm H2O\r\n";
-  */
+  Serial << "sample\ttime\tin H2O\tcm H2O\r\n";
 } 
 
 void loop()
 {
   int results, sample=1;
   long initTime = 0, msec = 0;
-  float mv, psi, cm;
+  float in, cm;
   char t = '\t'; // for tab separator
 
-  results = ms45.readPressure();
-  Serial << "result " << results << endl;
-  delay(100);
-
-/*  
   while ( sample <= nSamples ) {
     results = ms45.readPressure();
-    mv = results * 0.0078125;
-    psi = mv * 1.45/35;
-    cm = psi * 70.307;
-    Serial << sample <<t << (float)msec/1000. << t << results << t << mv <<t << psi<< t << cm << endl;
+    in = results-8192;
+    cm = in *2.54;
+    Serial << sample <<t << (float)msec/1000. << t << results << t << in <<t << cm << endl;
     if ( initTime == 0 ) {
       initTime = millis();
     }
@@ -148,5 +141,4 @@ void loop()
     digitalWrite( LED_BUILTIN, !digitalRead( LED_BUILTIN )); // blink LED
     delay(500);
   }
-  */
 }
